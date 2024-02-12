@@ -1,4 +1,4 @@
-from rest_framework.views import APIView
+from rest_framework.decorators import api_view
 from .models import *
 from rest_framework.response import Response
 from rest_framework import status
@@ -6,9 +6,11 @@ from rest_framework import status
 # Create your views here.
 
 
-class LoginView(APIView):
+@api_view(http_method_names=["POST"])
+def LoginView(Request):
     pass
 
 
-class RegisterView(APIView):
+@api_view(http_method_names=["POST"])
+def RegisterView(Request):
     pass
