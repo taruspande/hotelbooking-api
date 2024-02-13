@@ -17,7 +17,7 @@ api/user/logout/ - POST request
     Required fields: refresh
     Returns: None
 api/user/register/ - POST request
-    Required fields: username, name, password
+    Required fields: username, first_name, last_name, email, password
     Returns: None
 """
 urlpatterns = [
