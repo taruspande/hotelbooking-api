@@ -14,3 +14,8 @@ class Hotel(models.Model):
     laundry = models.BooleanField(default=False)
     checkin_time = models.TimeField()
     checkout_time = models.TimeField()
+    
+    def __str__(self):
+        return self.name
+    
+    
