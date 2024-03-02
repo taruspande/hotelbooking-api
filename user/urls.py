@@ -17,8 +17,12 @@ api/user/logout/ - POST request
     Required fields: refresh
     Returns: None
 api/user/register/ - POST request
-    Required fields: username, first_name, last_name, email, password
+    Required fields: username, password
+    Optional fields: email, first_name, last_name
     Returns: None
+api/user/details/ - GET request (requires authentication)
+    Required fields: None
+    Returns: user details
 """
 urlpatterns = [
     path("login/", TokenObtainPairView.as_view(), name="login"),
