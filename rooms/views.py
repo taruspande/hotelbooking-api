@@ -17,3 +17,15 @@ def ListView(request):
         return Response(serializer.data)
     except Exception as e:
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(http_method_names=["POST"])
+def CreateView(request):
+    try:
+        serializer = RoomSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response(status=status.HTTP_400_BAD_REQUEST)

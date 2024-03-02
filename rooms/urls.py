@@ -10,4 +10,5 @@ api/rooms/list/ - GET request
 """
 urlpatterns = [
     path("list/", ListView, name="list"),
+    path("create/", CreateView, name="create"),
 ]
