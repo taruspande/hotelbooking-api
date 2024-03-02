@@ -32,9 +32,8 @@ def CreateView(request):
 
 
 @api_view(http_method_names=["PUT"])
-def UpdateView(request):
+def UpdateView(request, room_id):
     try:
-        room_id = request.data.get("room_id")
         hotel_id = request.data.get("hotel_id")
         room_type = request.data.get("room_type")
         price_per_night = request.data.get("price_per_night")
@@ -54,5 +53,15 @@ def UpdateView(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(http_method_names=["DELETE"])
+def DeleteView(request, room_id):
+    try:
+        room = Room.objects.get(room_id=room_id)
+        room.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
     except Exception as e:
         return Response(status=status.HTTP_400_BAD_REQUEST)
