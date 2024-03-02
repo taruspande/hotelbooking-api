@@ -18,3 +18,6 @@ class Room(models.Model):
 
     def get_room_type(self):
         return self.room_types(self.room_type)
+
+    def __str__(self):
+        return str(self.room_id)

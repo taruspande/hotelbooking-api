@@ -29,3 +29,30 @@ def CreateView(request):
         return Response(status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(http_method_names=["PUT"])
+def UpdateView(request):
+    try:
+        room_id = request.data.get("room_id")
+        hotel_id = request.data.get("hotel_id")
+        room_type = request.data.get("room_type")
+        price_per_night = request.data.get("price_per_night")
+        room_number = request.data.get("room_number")
+        room = Room.objects.get(room_id=room_id)
+        data = {
+            "room_id": room_id,
+            "hotel_id": hotel_id if hotel_id else str(room.hotel_id),
+            "room_type": room_type if room_type else str(room.room_type),
+            "price_per_night": (
+                price_per_night if price_per_night else str(room.price_per_night)
+            ),
+            "room_number": room_number if room_number else str(room.room_number),
+        }
+        serializer = RoomSerializer(room, data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
