@@ -15,7 +15,7 @@ def ListView(request):
             rooms = Room.objects.all()
         serializer = RoomSerializer(rooms, many=True)
         return Response(serializer.data)
-    except Exception as e:
+    except Exception:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -27,7 +27,7 @@ def CreateView(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    except Exception as e:
+    except Exception:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -39,8 +39,6 @@ def UpdateView(request, room_id):
         price_per_night = request.data.get("price_per_night")
         room_number = request.data.get("room_number")
         room = Room.objects.get(room_id=room_id)
-        if not room:
-            return Response(status=status.HTTP_404_NOT_FOUND)
         data = {
             "room_id": room_id,
             "hotel_id": hotel_id if hotel_id else str(room.hotel_id),
@@ -55,7 +53,9 @@ def UpdateView(request, room_id):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    except Exception as e:
+    except Room.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    except Exception:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -63,9 +63,9 @@ def UpdateView(request, room_id):
 def DeleteView(request, room_id):
     try:
         room = Room.objects.get(room_id=room_id)
-        if not room:
-            return Response(status=status.HTTP_404_NOT_FOUND)
         room.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-    except Exception as e:
+    except Room.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    except Exception:
         return Response(status=status.HTTP_400_BAD_REQUEST)

@@ -15,7 +15,7 @@ def RegisterView(request):
             serializer.save()
             return Response(status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    except Exception as e:
+    except Exception:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -26,7 +26,7 @@ def LogoutView(request):
         token = RefreshToken(refresh_token)
         token.blacklist()
         return Response(status=status.HTTP_205_RESET_CONTENT)
-    except Exception as e:
+    except Exception:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -45,5 +45,5 @@ def UserView(request):
             ):
                 data[key] = serializer.data[key]
         return Response(data)
-    except Exception as e:
+    except Exception:
         return Response(status=status.HTTP_400_BAD_REQUEST)
