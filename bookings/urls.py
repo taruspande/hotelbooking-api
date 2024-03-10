@@ -22,8 +22,8 @@ api/bookings/delete/<booking_id>/ - DELETE request (requires authentication)
     Returns: None
 """
 urlpatterns = [
-    path("listuser/", ListViewUser, name="listuser"),
-    path("listhotel/", ListViewHotel, name="listhotel"),
+    path("listuser/", ListUserView, name="listuser"),
+    path("listhotel/", ListHotelView, name="listhotel"),
     path("create/", CreateView, name="create"),
     path("update/<booking_id>/", UpdateView, name="update"),
     path("delete/<booking_id>/", DeleteView, name="delete"),

@@ -9,7 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 # Create your views here.
 @api_view(http_method_names=["GET"])
 @permission_classes([IsAuthenticated])
-def ListViewUser(request):
+def ListUserView(request):
     try:
         user_id = request.user.id
         bookings = Booking.objects.filter(user_id=user_id)
@@ -20,7 +20,7 @@ def ListViewUser(request):
 
 
 @api_view(http_method_names=["GET"])
-def ListViewHotel(request):
+def ListHotelView(request):
     try:
         hotel_id = request.query_params.get("hotel_id")
         rooms = Room.objects.filter(hotel_id=hotel_id)
