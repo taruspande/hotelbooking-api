@@ -1,4 +1,5 @@
 from .serializers import *
+from rooms.serializers import *
 from user.serializers import UserSerializer
 from rest_framework.response import Response
 from rest_framework import status
@@ -23,7 +24,9 @@ def ListViewUser(request):
 def ListViewHotel(request):
     try:
         hotel_id = request.query_params.get("hotel_id")
-        bookings = Booking.objects.filter(hotel_id=hotel_id)
+        rooms = Room.objects.filter(hotel_id=hotel_id)
+        room_ids = [room.room_id for room in rooms]
+        bookings = Booking.objects.filter(room_id__in=room_ids)
         serializer = BookingSerializer(bookings, many=True)
         return Response(serializer.data)
     except Exception:
