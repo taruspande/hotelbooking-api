@@ -74,6 +74,7 @@ def UpdateView(request, booking_id):
 
 
 @api_view(http_method_names=["DELETE"])
+@permission_classes([IsAuthenticated])
 def DeleteView(request, booking_id):
     try:
         booking = Booking.objects.get(booking_id=booking_id)
