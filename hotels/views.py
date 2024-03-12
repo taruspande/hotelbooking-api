@@ -1,8 +1,8 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Hotel
-from .serializers import HotelSerializer
+from .serializers import *
+from rooms.models import Room
 
 
 @api_view(["GET"])
@@ -10,6 +10,14 @@ def hotel_list(request):
     try:
         hotels = Hotel.objects.all()
         serializer = HotelSerializer(hotels, many=True)
+        for hotel in serializer.data:
+            id = hotel["hotel_id"]
+            rooms = Room.objects.filter(hotel_id=id)
+            room_types = []
+            for room in rooms:
+                if room.room_type not in room_types:
+                    room_types.append(room.room_type)
+            hotel["room_types"] = room_types
         return Response(serializer.data)
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
