@@ -5,14 +5,14 @@ import uuid
 
 class Room(models.Model):
     class room_types(models.IntegerChoices):
-        _HU = 1
-        _STU = 2
-        _1BR = 3
-        _2BR = 4
+        HU = 1
+        STU = 2
+        BR1 = 3
+        BR2 = 4
 
     room_id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
     hotel_id = models.ForeignKey(Hotel, on_delete=models.CASCADE)
-    room_type = models.IntegerField(choices=room_types.choices, default=room_types._HU)
+    room_type = models.IntegerField(choices=room_types.choices, default=room_types.HU)
     price_per_night = models.DecimalField(max_digits=10, decimal_places=2)
     room_number = models.IntegerField()
 

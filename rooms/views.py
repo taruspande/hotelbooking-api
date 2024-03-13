@@ -42,11 +42,11 @@ def UpdateView(request, room_id):
         data = {
             "room_id": room_id,
             "hotel_id": hotel_id if hotel_id else str(room.hotel_id),
-            "room_type": room_type if room_type else str(room.room_type),
+            "room_type": room_type if room_type else room.room_type,
             "price_per_night": (
-                price_per_night if price_per_night else str(room.price_per_night)
+                price_per_night if price_per_night else room.price_per_night
             ),
-            "room_number": room_number if room_number else str(room.room_number),
+            "room_number": room_number if room_number else room.room_number,
         }
         serializer = RoomSerializer(room, data=data)
         if serializer.is_valid():
