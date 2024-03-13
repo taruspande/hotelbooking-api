@@ -9,7 +9,7 @@ import re
 regex1 = re.compile(
     r"^(?:[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+\.)*[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+@(?!-)[a-zA-Z0-9-]{1,63}(?<!-)(?:\.(?!-)[a-zA-Z0-9-]{1,63}(?<!-))*$"
 )
-regex2 = re.compile(r"[^@]{1,64}@[^@]{1,255}")
+regex2 = re.compile(r"^[^@]{1,64}@[^@]{1,255}$")
 
 
 # Create your views here.
