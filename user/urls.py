@@ -6,6 +6,7 @@ from rest_framework_simplejwt.views import (
 )
 
 """
+Note: username is the email address
 API endpoints for user authentication
 api/user/login/ - POST request
     Required fields: username, password
@@ -18,11 +19,11 @@ api/user/logout/ - POST request
     Returns: None
 api/user/register/ - POST request
     Required fields: username, password
-    Optional fields: email, first_name, last_name
+    Optional fields: first_name, last_name
     Returns: None
 api/user/details/ - GET request (requires authentication)
     Required fields: None
-    Returns: username, email, first_name, last_name
+    Returns: username, first_name, last_name
 """
 urlpatterns = [
     path("login/", TokenObtainPairView.as_view(), name="login"),

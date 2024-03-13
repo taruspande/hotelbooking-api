@@ -37,12 +37,7 @@ def UserView(request):
         serializer = UserSerializer(request.user)
         data = {}
         for key in serializer.data:
-            if (
-                key == "first_name"
-                or key == "last_name"
-                or key == "email"
-                or key == "username"
-            ):
+            if key == "first_name" or key == "last_name" or key == "username":
                 data[key] = serializer.data[key]
         return Response(data)
     except Exception:
