@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 import uuid
 
 
@@ -22,3 +23,15 @@ class Hotel(models.Model):
 
     def __str__(self):
         return str(self.hotel_id)
+
+    def clean(self):
+        if not len(str(self.contact)) == 10:
+            raise ValidationError({"contact": "Invalid contact number"})
+        if not 1 <= self.stars <= 5:
+            raise ValidationError({"stars": "Invalid number of stars"})
+        if self.checkin_time <= self.checkout_time:
+            raise ValidationError({"checkout_time": "Invalid checkout time"})
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super(Hotel, self).save(*args, **kwargs)
