@@ -8,6 +8,8 @@ class Hotel(models.Model):
     name = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, default=28.614367)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, default=77.199530)
     contact = models.IntegerField()
     free_wifi = models.BooleanField(default=False)
     pool = models.BooleanField(default=False)
@@ -31,6 +33,10 @@ class Hotel(models.Model):
             raise ValidationError({"stars": "Invalid number of stars"})
         if self.checkin_time <= self.checkout_time:
             raise ValidationError({"checkout_time": "Invalid checkout time"})
+        if abs(self.latitude) > 90:
+            raise ValidationError({"latitude": "Invalid latitude"})
+        if abs(self.longitude) > 180:
+            raise ValidationError({"longitude": "Invalid longitude"})
 
     def save(self, *args, **kwargs):
         self.full_clean()

@@ -54,6 +54,8 @@ def update_hotel(request, hotel_id):
         name = request.data.get("name")
         address = request.data.get("address")
         city = request.data.get("city")
+        latitude = request.data.get("latitude")
+        longitude = request.data.get("longitude")
         contact = request.data.get("contact")
         free_wifi = request.data.get("free_wifi")
         pool = request.data.get("pool")
@@ -72,6 +74,8 @@ def update_hotel(request, hotel_id):
             "name": name if name else hotel.name,
             "address": address if address else hotel.address,
             "city": city if city else hotel.city,
+            "latitude": latitude if latitude else hotel.latitude,
+            "longitude": longitude if longitude else hotel.longitude,
             "contact": contact if contact else hotel.contact,
             "free_wifi": free_wifi if free_wifi else hotel.free_wifi,
             "pool": pool if pool else hotel.pool,
