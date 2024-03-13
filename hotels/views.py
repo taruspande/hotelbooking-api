@@ -14,10 +14,21 @@ def hotel_list(request):
             id = hotel["hotel_id"]
             rooms = Room.objects.filter(hotel_id=id)
             room_types = []
+            min_price = rooms[0].price_per_night
+            max_price = min_price
+            average_price = 0
             for room in rooms:
                 if room.room_type not in room_types:
                     room_types.append(room.room_type)
+                if room.price_per_night < min_price:
+                    min_price = room.price_per_night
+                if room.price_per_night > max_price:
+                    max_price = room.price_per_night
+                average_price += room.price_per_night
             hotel["room_types"] = room_types
+            hotel["min_price"] = min_price
+            hotel["max_price"] = max_price
+            hotel["average_price"] = average_price / len(rooms)
         return Response(serializer.data)
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
