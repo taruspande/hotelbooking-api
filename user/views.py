@@ -4,12 +4,21 @@ from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
+import re
+
+regex1 = re.compile(
+    r"^(?:[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+\.)*[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+@(?!-)[a-zA-Z0-9-]{1,63}(?<!-)(?:\.(?!-)[a-zA-Z0-9-]{1,63}(?<!-))*$"
+)
+regex2 = re.compile(r"[^@]{1,64}@[^@]{1,255}")
 
 
 # Create your views here.
 @api_view(http_method_names=["POST"])
 def RegisterView(request):
     try:
+        username = request.data["username"]
+        if not (re.fullmatch(regex1, username) and re.fullmatch(regex2, username)):
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
