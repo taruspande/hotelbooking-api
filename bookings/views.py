@@ -59,10 +59,8 @@ def UpdateView(request, booking_id):
         data = {
             "booking_id": booking_id,
             "room_id": room_id if room_id else str(booking.room_id),
-            "checkin_date": checkin_date if checkin_date else str(booking.checkin_date),
-            "checkout_date": (
-                checkout_date if checkout_date else str(booking.checkout_date)
-            ),
+            "checkin_date": checkin_date if checkin_date else booking.checkin_date,
+            "checkout_date": checkout_date if checkout_date else booking.checkout_date,
         }
         serializer = BookingSerializer(booking, data=data)
         if serializer.is_valid():

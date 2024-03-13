@@ -14,10 +14,21 @@ def hotel_list(request):
             id = hotel["hotel_id"]
             rooms = Room.objects.filter(hotel_id=id)
             room_types = []
+            min_price = rooms[0].price_per_night
+            max_price = min_price
+            average_price = 0
             for room in rooms:
                 if room.room_type not in room_types:
                     room_types.append(room.room_type)
+                if room.price_per_night < min_price:
+                    min_price = room.price_per_night
+                if room.price_per_night > max_price:
+                    max_price = room.price_per_night
+                average_price += room.price_per_night
             hotel["room_types"] = room_types
+            hotel["min_price"] = min_price
+            hotel["max_price"] = max_price
+            hotel["average_price"] = average_price / len(rooms)
         return Response(serializer.data)
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
@@ -48,6 +59,9 @@ def update_hotel(request, hotel_id):
         gym = request.data.get("gym")
         restaurant = request.data.get("restaurant")
         laundry = request.data.get("laundry")
+        stars = request.data.get("stars")
+        overview = request.data.get("overview")
+        nearby = request.data.get("nearby")
         checkin_time = request.data.get("checkin_time")
         checkout_time = request.data.get("checkout_time")
         hotel = Hotel.objects.get(hotel_id=hotel_id)
@@ -63,6 +77,9 @@ def update_hotel(request, hotel_id):
             "gym": gym if gym else hotel.gym,
             "restaurant": restaurant if restaurant else hotel.restaurant,
             "laundry": laundry if laundry else hotel.laundry,
+            "stars": stars if stars else hotel.stars,
+            "overview": overview if overview else hotel.overview,
+            "nearby": nearby if nearby else hotel.nearby,
             "checkin_time": checkin_time if checkin_time else hotel.checkin_time,
             "checkout_time": checkout_time if checkout_time else hotel.checkout_time,
         }

@@ -14,6 +14,9 @@ class Hotel(models.Model):
     gym = models.BooleanField(default=False)
     restaurant = models.BooleanField(default=False)
     laundry = models.BooleanField(default=False)
+    stars = models.IntegerField(default=1)
+    overview = models.TextField(default="")
+    nearby = models.TextField(default="")
     checkin_time = models.TimeField()
     checkout_time = models.TimeField()
 
