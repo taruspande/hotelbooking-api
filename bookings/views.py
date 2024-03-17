@@ -56,9 +56,12 @@ def UpdateView(request, booking_id):
         checkin_date = request.data.get("checkin_date")
         checkout_date = request.data.get("checkout_date")
         booking = Booking.objects.get(booking_id=booking_id)
+        if booking.user_id != request.user.id:
+            return Response(status=status.HTTP_403_FORBIDDEN)
         data = {
             "booking_id": booking_id,
             "room_id": room_id if room_id else str(booking.room_id),
+            "user_id": booking.user_id,
             "checkin_date": checkin_date if checkin_date else booking.checkin_date,
             "checkout_date": checkout_date if checkout_date else booking.checkout_date,
         }
@@ -78,6 +81,8 @@ def UpdateView(request, booking_id):
 def DeleteView(request, booking_id):
     try:
         booking = Booking.objects.get(booking_id=booking_id)
+        if booking.user_id != request.user.id:
+            return Response(status=status.HTTP_403_FORBIDDEN)
         booking.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     except Booking.DoesNotExist:

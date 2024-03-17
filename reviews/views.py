@@ -28,7 +28,7 @@ def review_delete(request, review_id):
     try:
         review = Review.objects.get(review_id=review_id)
         if review.user_id != request.user.id:
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
+            return Response(status=status.HTTP_403_FORBIDDEN)
         review.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     except (ValueError, TypeError, Review.DoesNotExist):
@@ -43,7 +43,7 @@ def review_update(request, review_id):
     try:
         review = Review.objects.get(review_id=review_id)
         if review.user_id != request.user.id:
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
+            return Response(status=status.HTTP_403_FORBIDDEN)
         hotel_id = request.data.get("hotel_id")
         rating = request.data.get("rating")
         title = request.data.get("title")
