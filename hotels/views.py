@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import *
 from rooms.models import Room
+from reviews.models import Review
 
 
 def gen_keywords(name):
@@ -95,6 +96,12 @@ def hotel_list(request):
             hotel["average_price"] = (
                 0 if len(rooms) == 0 else (average_price / len(rooms))
             )
+            reviews = Review.objects.filter(hotel_id=id)
+            hotel["reviews"] = len(reviews)
+            rating = 0
+            for review in reviews:
+                rating += review.rating
+            hotel["rating"] = 0 if len(reviews) == 0 else (rating / len(reviews))
         return Response(serializer.data)
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
