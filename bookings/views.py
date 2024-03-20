@@ -39,6 +39,16 @@ def CreateView(request):
         user_id = request.user.id
         data = request.data
         data["user_id"] = user_id
+        checkin_date = data["checkin_date"]
+        checkout_date = data["checkout_date"]
+        room_id = data["room_id"]
+        bookings = Booking.objects.filter(room_id=room_id)
+        for booking in bookings:
+            if not (
+                checkin_date <= booking.checkout_date
+                or checkout_date >= booking.checkin_date
+            ):
+                return Response(status=status.HTTP_409_CONFLICT)
         serializer = BookingSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
@@ -65,6 +75,16 @@ def UpdateView(request, booking_id):
             "checkin_date": checkin_date if checkin_date else booking.checkin_date,
             "checkout_date": checkout_date if checkout_date else booking.checkout_date,
         }
+        checkin_date = data["checkin_date"]
+        checkout_date = data["checkout_date"]
+        room_id = data["room_id"]
+        bookings = Booking.objects.filter(room_id=room_id)
+        for booking in bookings:
+            if not (
+                checkin_date <= booking.checkout_date
+                or checkout_date >= booking.checkin_date
+            ):
+                return Response(status=status.HTTP_409_CONFLICT)
         serializer = BookingSerializer(booking, data=data)
         if serializer.is_valid():
             serializer.save()
