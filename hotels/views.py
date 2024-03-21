@@ -74,6 +74,8 @@ def hotel_list(request):
                 hotel_keywords = gen_keywords(hotel.name)
                 if all(keyword in hotel_keywords for keyword in keywords):
                     hotel_list.append(hotel)
+        else:
+             hotel_list = hotels
         serializer = HotelSerializer(hotel_list, many=True)
         for hotel in serializer.data:
             id = hotel["hotel_id"]
