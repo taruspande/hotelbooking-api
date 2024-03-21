@@ -5,7 +5,8 @@ from .views import *
 """
 API endpoints for rooms
 api/rooms/list/ - GET request
-    Optional fields: hotel_id
+    Required fields: None
+    Optional fields: hotel_id, room_type
     Returns: list of rooms
 api/rooms/create/ - POST request
     Required fields: hotel_id, room_type, price_per_night, room_number

@@ -8,11 +8,12 @@ from rest_framework.decorators import api_view
 @api_view(http_method_names=["GET"])
 def ListView(request):
     try:
-        hotel_id = request.query_params.get("hotel_id")
-        if hotel_id:
-            rooms = Room.objects.filter(hotel_id=hotel_id)
-        else:
-            rooms = Room.objects.all()
+        filters = {}
+        if request.query_params.get("hotel_id"):
+            filters["hotel_id"] = request.query_params.get("hotel_id")
+        if request.query_params.get("room_type"):
+            filters["room_type"] = request.query_params.get("room_type")
+        rooms = Room.objects.filter(**filters)
         serializer = RoomSerializer(rooms, many=True)
         return Response(serializer.data)
     except Exception:
