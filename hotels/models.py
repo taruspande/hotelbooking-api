@@ -22,6 +22,9 @@ class Hotel(models.Model):
     nearby = models.TextField(default="")
     checkin_time = models.TimeField()
     checkout_time = models.TimeField()
+    image_url = models.URLField(
+        default="https://upload.wikimedia.org/wikipedia/commons/1/17/Hotel_Ritz_Paris.jpg"
+    )
 
     def __str__(self):
         return str(self.hotel_id)
